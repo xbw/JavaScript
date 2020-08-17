@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>CryptoJS Ciphers</title>
+		<script src=" https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"> </script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/mode-cfb.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/mode-ctr-gladman.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/mode-ctr.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/mode-ecb.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/mode-ofb.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/pad-ansix923.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/pad-nopadding.js"></script>
+
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/rc4.js"></script>
+	</head>
+
+	<body>
+		<script>
+			// var wordArray = CryptoJS.lib.WordArray.create();//创建一个空的 WordArray对象
+			const words = "admin";
+			const key = "abcdef0123456789";
+			const iv = "0123456789abcdef";
+			let salt = "0123456789abcdef";
+			// console.dir("JSON.stringify(words)>>" + JSON.stringify(words));
+			console.dir("words>>" + words + "\tkey>>" + key + "\tiv>>" + iv);
+
+			let wordsUtf8 = CryptoJS.enc.Utf8.parse(words);
+			let keyUtf8 = CryptoJS.enc.Utf8.parse(key);
+			let ivUtf8 = CryptoJS.enc.Utf8.parse(iv);
+			console.dir("wordsUtf8>>" + wordsUtf8 + "\tkeyUtf8>>" + keyUtf8 + "\tivUtf8>>" + ivUtf8);
+			console.dir("\n");
+
+			var encrypted = CryptoJS.AES.encrypt(words, key);
+			console.dir("default AES encrypted>>" + encrypted)
+			encrypted = CryptoJS.AES.encrypt(words, key, {
+				iv: iv,
+				mode: CryptoJS.mode.CBC, // the default
+				padding: CryptoJS.pad.Pkcs7 // the default 后台用的是pad.Pkcs5,前台对应为Pkcs7
+			});
+			console.dir("default AES encrypted>>" + encrypted)
+			var decrypted = CryptoJS.AES.decrypt(encrypted, key);
+			console.dir("default AES decrypted>>" + CryptoJS.enc.Utf8.stringify(decrypted))
+
+			var encrypted = CryptoJS.AES.encrypt(words, keyUtf8, {
+				// iv: iv, //ecb模式不用填写！
+				mode: CryptoJS.mode.ECB,
+				padding: CryptoJS.pad.Pkcs7
+			});
+			console.dir("ECB/Pkcs7 AES encrypted>>" + encrypted)
+			var decrypted = CryptoJS.AES.decrypt(encrypted, keyUtf8, {
+				// iv: iv, //ecb模式不用填写！
+				mode: CryptoJS.mode.ECB,
+				padding: CryptoJS.pad.Pkcs7
+			});
+			console.dir("ECB/Pkcs7 AES decrypted>>" + CryptoJS.enc.Utf8.stringify(decrypted))
+
+			var encrypted = CryptoJS.AES.encrypt(words, keyUtf8, {
+				// iv: iv, //ecb模式不用填写！
+				mode: CryptoJS.mode.ECB,
+				padding: CryptoJS.pad.NoPadding
+			});
+			console.dir("ECB/NoPadding AES encrypted>>" + encrypted)
+			var decrypted = CryptoJS.AES.decrypt(encrypted, keyUtf8, {
+				mode: CryptoJS.mode.ECB,
+				padding: CryptoJS.pad.NoPadding
+			});
+			console.dir("ECB/NoPadding AES decrypted>>" + decrypted.toString())
+
+
+			var encrypted = CryptoJS.AES.encrypt(JSON.stringify(words), keyUtf8, {
+				// iv:"", //iv偏移量，ecb模式不用填写！
+				mode: CryptoJS.mode.ECB,
+				padding: CryptoJS.pad.Pkcs7
+			});
+			console.dir("encrypted.toString()>>" + encrypted.toString())
+
+			// encrypted = CryptoJS.AES.encrypt(wordsBytes, keyUtf8, {
+			// 	// iv: ivBytes,
+			// 	mode: CryptoJS.mode.CFB,
+			// 	padding: CryptoJS.pad.AnsiX923
+			// });
+			console.dir("\n");
+
+			var encrypted = CryptoJS.RC4.encrypt(words, key);
+			console.dir("RC4 encrypted>>" + encrypted);
+			var decrypted = CryptoJS.RC4.decrypt(encrypted, key);
+			console.dir("RC4 decrypted>>" + decrypted.toString(CryptoJS.enc.Utf8));
+
+			var hex = encrypted.toString(CryptoJS.format.Hex);
+			console.dir("RC4 encrypted Hex>>" + hex);
+			hex = CryptoJS.enc.Hex.parse(hex)
+			decrypted = CryptoJS.RC4.decrypt(CryptoJS.lib.CipherParams.create({
+				ciphertext: hex
+			}), key);
+			console.dir("RC4 decrypted Hex>>" + decrypted.toString(CryptoJS.enc.Hex));
+			console.dir("\n");
+		</script>
+		<script>
+			//首先声明两个变量，加密的时候要用到，要和后台沟通，保持一致
+			const AES_KEY = 'abcdefgabcdefg12';
+			const IV = '';
+
+			function encrypt(params) {
+				var key = CryptoJS.enc.Utf8.parse(AES_KEY);
+				var iv = CryptoJS.enc.Utf8.parse(IV);
+				var jsonData = JSON.stringify(params);
+				console.dir(jsonData)
+				//下面的data参数要求是一个字符串，第一次用的时候我直接传递的是一个对象，出现了错误，要转换成字符串
+				var data = CryptoJS.enc.Utf8.parse(jsonData);
+				var encrypted = CryptoJS.AES.encrypt(data, key, {
+					// iv: IV,
+					mode: CryptoJS.mode.ECB,
+					padding: CryptoJS.pad.Pkcs7
+				}).toString();
+				return encrypted;
+			}
+
+			//然后就可以使用了， 比如要加密的表单是下面的格式：
+			// console.dir(encrypt("admin"))
+			var params = {
+				"txtValid": "admin",
+				"txtPwd": "admin",
+				"txtName": "admin",
+				"timestamp": "123456789"
+			};
+			console.dir(encrypt(params))
+		</script>
+	</body>
+
+</html>

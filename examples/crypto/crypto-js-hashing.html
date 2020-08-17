@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>CryptoJS Hashing</title>
+		<!-- Optional -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/enc-base64.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/md5.js"></script>
+		<!-- SHA -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha1.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha224.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha256.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha384.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha3.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha512.js"></script>
+		<!-- RIPEMD-160 -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/ripemd160.js"></script>
+		<!-- HMAC -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/hmac-md5.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/hmac-ripemd160.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/hmac-sha1.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/hmac-sha224.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/hmac-sha256.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/hmac-sha384.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/hmac-sha3.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/hmac-sha512.js"></script>
+		<!-- PBKDF2 -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/pbkdf2.js"></script>
+	</head>
+	<body>
+		<script>
+			// var wordArray = CryptoJS.lib.WordArray.create();//创建一个空的 WordArray对象
+			const words = "admin";
+			const key = "abcdef0123456789";
+			const iv = "0123456789abcdef";
+			let salt = "0123456789abcdef";
+			// console.dir("JSON.stringify(words)>>" + JSON.stringify(words));
+			console.dir("words>>" + words + "\tkey>>" + key + "\tiv>>" + iv);
+
+			let wordsUtf8 = CryptoJS.enc.Utf8.parse(words);
+			let keyUtf8 = CryptoJS.enc.Utf8.parse(key);
+			let ivUtf8 = CryptoJS.enc.Utf8.parse(iv);
+			console.dir("wordsUtf8>>" + wordsUtf8 + "\tkeyUtf8>>" + keyUtf8 + "\tivUtf8>>" + ivUtf8);
+
+			let wordsBase64 = CryptoJS.enc.Base64.parse(wordsUtf8.toString(CryptoJS.enc.Base64));
+			let keyBase64 = CryptoJS.enc.Base64.parse(keyUtf8.toString(CryptoJS.enc.Base64));
+			let ivBase64 = CryptoJS.enc.Base64.parse(ivUtf8.toString(CryptoJS.enc.Base64));
+			wordsBase64 = CryptoJS.enc.Base64.stringify(wordsBase64);
+			keyBase64 = CryptoJS.enc.Base64.stringify(keyBase64);
+			ivBase64 = CryptoJS.enc.Base64.stringify(ivBase64);
+
+			let wordsUtf8_2 = wordsUtf8.toString(CryptoJS.enc.Utf8);
+			wordsUtf8 = CryptoJS.enc.Utf8.stringify(wordsUtf8);
+			keyUtf8 = CryptoJS.enc.Utf8.stringify(keyUtf8);
+			ivUtf8 = CryptoJS.enc.Utf8.stringify(ivUtf8);
+			console.dir("wordsUtf8>>" + wordsUtf8 + "," + wordsUtf8_2 + "\tkeyUtf8>>" + keyUtf8 + "\tivUtf8>>" + ivUtf8);
+
+			console.dir("wordsBase64>>" + wordsBase64 + "\tkeyBase64>>" + keyBase64 + "\tivBase64>>" + ivBase64);
+			wordsBase64 = CryptoJS.enc.Base64.parse(wordsBase64);
+			keyBase64 = CryptoJS.enc.Base64.parse(keyBase64);
+			ivBase64 = CryptoJS.enc.Base64.parse(ivBase64);
+			let wordsBase64_2 = wordsBase64.toString(CryptoJS.enc.Utf8);
+			wordsBase64 = CryptoJS.enc.Utf8.stringify(wordsBase64);
+			keyBase64 = CryptoJS.enc.Utf8.stringify(keyBase64);
+			ivBase64 = CryptoJS.enc.Utf8.stringify(ivBase64);
+			console.dir("wordsBase64>>" + wordsBase64 + "," + wordsBase64_2 + "\tkeyBase64>>" + keyBase64 + "\tivBase64>>" +
+				ivBase64);
+			console.dir("\n");
+
+			tmp = CryptoJS.MD5(words);
+			console.dir("CryptoJS.MD5(words)>>" + tmp + "\tlength>>" + tmp.toString().length);
+			console.dir("\n");
+
+			tmp = CryptoJS.SHA1(words);
+			console.dir("CryptoJS.SHA1(words)>>" + tmp + "\tlength>>" + tmp.toString().length);
+			tmp = CryptoJS.SHA224(words);
+			console.dir("CryptoJS.SHA224(words)>>" + tmp + "\tlength>>" + tmp.toString().length);
+			tmp = CryptoJS.SHA256(words);
+			console.dir("CryptoJS.SHA256(words)>>" + tmp + "\tlength>>" + tmp.toString().length);
+			tmp = CryptoJS.SHA384(words);
+			console.dir("CryptoJS.SHA384(words)>>" + tmp + "\tlength>>" + tmp.toString().length);
+			tmp = CryptoJS.SHA3(words, {
+				outputLength: 224
+			});
+			console.dir("CryptoJS.SHA3(words, { outputLength: 224 })>>" + tmp + "\tlength>>" + tmp.toString().length);
+			tmp = CryptoJS.SHA3(words, {
+				outputLength: 256
+			});
+			console.dir("CryptoJS.SHA3(words, { outputLength: 256 })>>" + tmp + "\tlength>>" + tmp.toString().length);
+			tmp = CryptoJS.SHA3(words, {
+				outputLength: 384
+			});
+			console.dir("CryptoJS.SHA3(words, { outputLength: 384 })>>" + tmp + "\tlength>>" + tmp.toString().length);
+			tmp = CryptoJS.SHA3(words, {
+				outputLength: 512
+			});
+			console.dir("CryptoJS.SHA3(words, { outputLength: 512 })>>" + tmp + "\tlength>>" + tmp.toString().length);
+			tmp = CryptoJS.SHA3(words);
+			console.dir("CryptoJS.SHA3(words)>>" + tmp + "\tlength>>" + tmp.toString().length);
+			tmp = CryptoJS.SHA512(words);
+			console.dir("CryptoJS.SHA512(words)>>" + tmp + "\tlength>>" + tmp.toString().length);
+			// let sha256 = CryptoJS.algo.SHA256.create();
+			// sha256.update("1");
+			// sha256.update("2");
+			// sha256.update("3");
+			// console.dir("CryptoJS.algo.SHA256.create()>>" + (sha256.finalize().toString() == CryptoJS.SHA256("123")));
+			console.dir("\n");
+
+			tmp = CryptoJS.RIPEMD160(words);
+			console.dir("CryptoJS.RIPEMD160(words)>>" + tmp + "\tlength>>" + tmp.toString().length);
+			console.dir("\n");
+
+			tmp = CryptoJS.HmacMD5(words, key);
+			console.dir("CryptoJS.HmacMD5(words)>>" + tmp + "\tlength>>" + tmp.toString().length);
+			tmp = CryptoJS.HmacRIPEMD160(words, key);
+			console.dir("CryptoJS.HmacRIPEMD160(words)>>" + tmp + "\tlength>>" + tmp.toString().length);
+			tmp = CryptoJS.HmacSHA1(words, key);
+			console.dir("CryptoJS.HmacSHA1(words)>>" + tmp + "\tlength>>" + tmp.toString().length);
+			tmp = CryptoJS.HmacSHA224(words, key);
+			console.dir("CryptoJS.HmacSHA224(words)>>" + tmp + "\tlength>>" + tmp.toString().length);
+			tmp = CryptoJS.HmacSHA256(words, key);
+			console.dir("CryptoJS.HmacSHA256(words)>>" + tmp + "\tlength>>" + tmp.toString().length);
+			tmp = CryptoJS.HmacSHA384(words, key);
+			console.dir("CryptoJS.HmacSHA384(words)>>" + tmp + "\tlength>>" + tmp.toString().length);
+			tmp = CryptoJS.HmacSHA3(words, key);
+			console.dir("CryptoJS.HmacSHA3(words)>>" + tmp + "\tlength>>" + tmp.toString().length);
+			tmp = CryptoJS.HmacSHA512(words, key);
+			console.dir("CryptoJS.HmacSHA512(words)>>" + tmp + "\tlength>>" + tmp.toString().length);
+			// var hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, key);
+			// hmac.update("1");
+			// hmac.update("2");
+			// hmac.update("3");
+			// console.dir("CryptoJS.algo.HMAC.create()>>" + (hmac.finalize().toString() == CryptoJS.HmacSHA256("123", key)));
+			console.dir("\n");
+
+			// var salt = CryptoJS.lib.WordArray.random(128 / 16);
+			// salt = CryptoJS.enc.Utf8.parse(salt); //盐
+			console.dir("salt>>" + salt.toString());
+			var iter = 1000; //迭代次数
+			tmp = CryptoJS.PBKDF2(words, salt, {
+				keySize: 128 / 32, //default
+				hasher: CryptoJS.algo.SHA1.create(), //default
+				iterations: 1 //default
+			});
+			tmp = CryptoJS.PBKDF2(words, salt);
+			console.dir("CryptoJS.PBKDF2() keySize4>>" + tmp.toString() + "\tlength>>" + tmp.toString().length)
+			tmp = CryptoJS.PBKDF2(words, salt, {
+				keySize: 256 / 32
+			});
+			console.dir("CryptoJS.PBKDF2() keySize=8>>" + tmp.toString() + "\tlength>>" + tmp.toString().length)
+			tmp = CryptoJS.PBKDF2(words, salt, {
+				keySize: 512 / 32
+			});
+			console.dir("CryptoJS.PBKDF2() keySize=16>>" + tmp.toString() + "\tlength>>" + tmp.toString().length)
+			tmp = CryptoJS.PBKDF2(words, salt, {
+				keySize: 512 / 32,
+				iterations: parseInt(iter)
+			});
+			console.dir("CryptoJS.PBKDF2() keySize=16 iter=1000>>" + tmp.toString() + "\tlength>>" + tmp.toString().length)
+		</script>
+	</body>
+</html>
