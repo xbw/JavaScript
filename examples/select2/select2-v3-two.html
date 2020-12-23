@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>sele2 v3</title>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2_locale_zh-CN.min.js"></script>
+		<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.min.css" />
+		<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2-bootstrap.min.css" />
+
+		<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+		<script type="text/javascript">
+			function getRootPath() {
+				var pathName = window.location.pathname.substring(1);
+				var webName = pathName == '' ? '' : pathName.substring(0, pathName.indexOf('/'));
+				return window.location.protocol + '//' + window.location.host + '/' + webName + '/';
+			}
+			$(document).ready(function() {
+				console.log(getRootPath())
+
+				// $("#select").prop("disabled", true); 
+				$("#select").on("change.select2", function(e) {
+					$("#select2").val($("#select").val())
+				})
+				console.log($("#select option:selected").val())
+			});
+		</script>
+	</head>
+	<body>
+		<select id="select" style="width: 100px;">
+			<option value="10">10</option>
+			<option value="20">20</option>
+			<option value="30">30</option>
+			<option value="40" selected>40</option>
+			<option value="50">50</option>
+		</select>
+		<select id="select2" style="width: 100px;">
+			<option value="10">10</option>
+			<option value="20">20</option>
+			<option value="30">30</option>
+			<option value="40">40</option>
+			<option value="50">50</option>
+		</select>
+	</body>
+</html>
